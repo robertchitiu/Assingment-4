@@ -1,0 +1,425 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>time1</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-04-11"><meta name="DC.source" content="time1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [] = time1()
+<span class="comment">%Robert Chitiu</span>
+<span class="comment">%101047295</span>
+set(0,<span class="string">'DefaultFigureWindowStyle'</span>,<span class="string">'docked'</span>)
+close <span class="string">all</span>
+
+R1=1;
+R2=2;
+R3=55.4247;
+R4=0.1;
+Ro=1000;
+a=100;
+L=0.2;
+Cap=0.25;
+Cn=0.00001;
+
+G = zeros(8,8);
+C = zeros(8,8);
+F = zeros(8,8);
+
+
+Vin = linspace(-10,10,100);
+Vo = zeros(100,1);
+V3 = zeros(100,1);
+Av = zeros(100,1);
+w = 2*pi*linspace(0,80,100);
+
+
+G(1,1) = 1/R1;
+G(1,2) = -1/R1;
+G(2,1) = -1/R1;
+G(2,2) = -1/R1+1/R2;
+G(3,2) = 1;
+G(3,3) = 1/R3;
+
+G(4,4) = 1/R4;
+G(5,4) = 1/R4;
+G(4,5) = -1/R4;
+G(5,5) = 1/R4+1/Ro;
+G(6,2) = -1;
+G(6,1) = 1;
+G(7, 2) = 1;
+G(7, 3) = -1;
+G(8, 3) = -a/R3;
+G(8, 4) = 1;
+G(1, 6) = 1;
+G(2, 7) = 1;
+G(3, 7) = -1;
+G(4, 8) = 1;
+
+
+C(2,1) = Cap;
+C(2,2) = -Cap;
+C(6,6) = L;
+C(3,4) = Cn;
+
+
+<span class="comment">%Time simulation</span>
+time=zeros(2000,1);
+VStep=zeros(2000,1);
+Vo = zeros(2000,1);
+
+<span class="keyword">for</span> i=1:2000
+
+    <span class="keyword">if</span> i==1
+    time(i)=0.0005;
+    <span class="keyword">else</span>
+    time(i)=time(i-1)+0.0005;
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> time(i)&gt;=0.03
+       VStep(i)=1;
+    <span class="keyword">end</span>
+    F(6) = VStep(i);
+    A = G + C ;
+    V = A\F;
+    Vo(i) = V(5);
+
+    F(3)=randn()/100;
+
+<span class="keyword">end</span>
+
+    fin=fft(VStep);
+    ffin=fftshift(fin);
+    fout=fft(Vo);
+    ffout=fftshift(fout);
+
+
+    figure (5)
+    subplot(1,2,1)
+    plot(time,VStep,<span class="string">'g'</span>)
+    hold <span class="string">on</span>
+    subplot(1,2,1)
+    plot(time,Vo,<span class="string">'b'</span>)
+    figure (5)
+    subplot(1,2,2)
+    plot(20*log (abs(ffin)),<span class="string">'g'</span>)
+    hold <span class="string">on</span>
+    subplot(1,2,2)
+    plot(20*log (abs(ffout)),<span class="string">'b'</span>)
+
+
+time=zeros(2000,1);
+Vsin=zeros(2000,1);
+Vo = zeros(2000,1);
+f=1/0.03;
+
+
+<span class="keyword">for</span> i=1:2000
+
+    <span class="keyword">if</span> i==1
+    time(i)=0.01;
+    <span class="keyword">else</span>
+    time(i)=time(i-1)+0.0005;
+    <span class="keyword">end</span>
+
+    Vsin(i)=sin(2*pi*f*time(i));
+    F(6) = Vsin(i);
+    A = G + C;
+    V = A\F;
+    Vo(i) = V(5);
+
+    F(3)=randn()/100;
+<span class="keyword">end</span>
+
+fin=fft(Vsin);
+ffin=fftshift(fin);
+fout=fft(Vo);
+ffout=fftshift(fout);
+figure (6)
+subplot(1,2,1)
+plot(time,Vsin,<span class="string">'g'</span>)
+hold <span class="string">on</span>
+subplot(1,2,1)
+plot(time,Vo,<span class="string">'b'</span>)
+subplot(1,2,2)
+plot(20*log (abs(ffin)),<span class="string">'g'</span>)
+hold <span class="string">on</span>
+subplot(1,2,2)
+plot(20*log (abs(ffout)),<span class="string">'b'</span>)
+
+Vo = zeros(2000,1);
+sd=0.3;
+mu=.5;
+Vgaus = 2.23/(2*pi*sd)*exp(-(time-0.06-mu).^2/(2*sd^2)) - 0.2085;
+
+
+<span class="keyword">for</span> i=1:2000
+
+
+    F(6) = Vgaus(i);
+    A = G + C;
+    V = A\F;
+    Vo(i) = V(5);
+
+    F(3)=randn()/100;
+<span class="keyword">end</span>
+fin=fft(Vgaus);
+ffin=fftshift(fin);
+fout=fft(Vo);
+ffout=fftshift(fout);
+
+figure(7)
+subplot(1,2,1)
+plot(time,Vgaus,<span class="string">'g'</span>);
+hold <span class="string">on</span>
+subplot(1,2,1)
+plot(time,Vo,<span class="string">'b'</span>);
+figure(7)
+subplot(1,2,2)
+plot(20*log (abs(ffin)),<span class="string">'g'</span>)
+hold <span class="string">on</span>
+subplot(1,2,2)
+plot(20*log (abs(ffout)),<span class="string">'b'</span>)
+
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="time1_01.png" alt=""> <img vspace="5" hspace="5" src="time1_02.png" alt=""> <img vspace="5" hspace="5" src="time1_03.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [] = time1()
+%Robert Chitiu
+%101047295
+set(0,'DefaultFigureWindowStyle','docked')
+close all
+
+R1=1;
+R2=2;
+R3=55.4247;
+R4=0.1;
+Ro=1000;
+a=100;
+L=0.2;
+Cap=0.25;
+Cn=0.00001;
+
+G = zeros(8,8);
+C = zeros(8,8);
+F = zeros(8,8);
+
+
+Vin = linspace(-10,10,100);
+Vo = zeros(100,1);
+V3 = zeros(100,1);
+Av = zeros(100,1);
+w = 2*pi*linspace(0,80,100);
+
+
+G(1,1) = 1/R1;
+G(1,2) = -1/R1;
+G(2,1) = -1/R1;
+G(2,2) = -1/R1+1/R2;
+G(3,2) = 1;
+G(3,3) = 1/R3;
+
+G(4,4) = 1/R4;
+G(5,4) = 1/R4;
+G(4,5) = -1/R4;
+G(5,5) = 1/R4+1/Ro;
+G(6,2) = -1;
+G(6,1) = 1;
+G(7, 2) = 1;
+G(7, 3) = -1;
+G(8, 3) = -a/R3;
+G(8, 4) = 1;
+G(1, 6) = 1;
+G(2, 7) = 1;
+G(3, 7) = -1;
+G(4, 8) = 1;
+
+
+C(2,1) = Cap;
+C(2,2) = -Cap;
+C(6,6) = L;
+C(3,4) = Cn;
+
+
+%Time simulation 
+time=zeros(2000,1);
+VStep=zeros(2000,1);
+Vo = zeros(2000,1);
+
+for i=1:2000
+    
+    if i==1
+    time(i)=0.0005;    
+    else
+    time(i)=time(i-1)+0.0005;
+    end
+    
+    if time(i)>=0.03
+       VStep(i)=1;
+    end
+    F(6) = VStep(i);
+    A = G + C ;
+    V = A\F;
+    Vo(i) = V(5);
+    
+    F(3)=randn()/100;
+ 
+end
+  
+    fin=fft(VStep);
+    ffin=fftshift(fin);
+    fout=fft(Vo);
+    ffout=fftshift(fout);
+
+
+    figure (5) 
+    subplot(1,2,1)
+    plot(time,VStep,'g')
+    hold on
+    subplot(1,2,1)
+    plot(time,Vo,'b')
+    figure (5)
+    subplot(1,2,2)
+    plot(20*log (abs(ffin)),'g')
+    hold on
+    subplot(1,2,2)
+    plot(20*log (abs(ffout)),'b')
+  
+    
+time=zeros(2000,1);    
+Vsin=zeros(2000,1);
+Vo = zeros(2000,1);
+f=1/0.03;
+
+
+for i=1:2000
+    
+    if i==1
+    time(i)=0.01;    
+    else
+    time(i)=time(i-1)+0.0005;
+    end
+    
+    Vsin(i)=sin(2*pi*f*time(i)); 
+    F(6) = Vsin(i);
+    A = G + C;
+    V = A\F;
+    Vo(i) = V(5);
+    
+    F(3)=randn()/100;
+end
+
+fin=fft(Vsin);
+ffin=fftshift(fin);
+fout=fft(Vo);
+ffout=fftshift(fout);
+figure (6) 
+subplot(1,2,1)
+plot(time,Vsin,'g')
+hold on
+subplot(1,2,1)
+plot(time,Vo,'b')
+subplot(1,2,2)
+plot(20*log (abs(ffin)),'g')
+hold on
+subplot(1,2,2)
+plot(20*log (abs(ffout)),'b')
+
+Vo = zeros(2000,1);
+sd=0.3;
+mu=.5;
+Vgaus = 2.23/(2*pi*sd)*exp(-(time-0.06-mu).^2/(2*sd^2)) - 0.2085; 
+ 
+
+for i=1:2000
+    
+    
+    F(6) = Vgaus(i);
+    A = G + C;
+    V = A\F;
+    Vo(i) = V(5);
+    
+    F(3)=randn()/100;
+end
+fin=fft(Vgaus);
+ffin=fftshift(fin);
+fout=fft(Vo);
+ffout=fftshift(fout);
+
+figure(7)
+subplot(1,2,1)
+plot(time,Vgaus,'g');
+hold on
+subplot(1,2,1)
+plot(time,Vo,'b');
+figure(7)
+subplot(1,2,2)
+plot(20*log (abs(ffin)),'g')
+hold on
+subplot(1,2,2)
+plot(20*log (abs(ffout)),'b')
+
+end
+##### SOURCE END #####
+--></body></html>
